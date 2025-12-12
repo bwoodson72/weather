@@ -1,66 +1,40 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {Grid, Container} from "@mui/material";
+import {Temperature} from "@/components/temperature/temperature";
+import {Weather} from "@/components/weather/weather";
+import {Search} from "@/components/search/search";
+import {LocationWidget} from "@/components/locationWidget/locationWidget";
+import {Skeleton} from "@mui/material";
+
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      <>
+          <Container maxWidth='xl'>
+
+
+              <Grid container spacing={3} sx={{display:'flex', justifyContent:'center'}} >
+                  <Grid size={12} sx={{display:'flex',justifyContent:'center'}}>
+
+                      <Search/>
+                  </Grid>
+
+                  <Grid size={12} >
+
+                        <LocationWidget/>
+
+                  </Grid>
+            {/* Change size={4} to responsive props */}
+            <Grid size={{ xs: 12, md: 4 }} sx={{display:'flex', justifyContent:'center'}}>
+                <Temperature/>
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }} sx={{display:'flex', justifyContent:'center'}}>
+
+              <Weather/>
+              </Grid>
+
+              </Grid>
+          </Container>
+        </>
   );
 }
