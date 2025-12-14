@@ -49,7 +49,7 @@ export async function getCurrentWeather(
   latitude: number,
   longitude: number
 ): Promise<CurrentWeatherResponse> {
-  const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
+  const baseUrl = "https://api.openweathermap.org/data/3.0/onecall";
   const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 
   if (!apiKey) {

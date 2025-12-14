@@ -6,6 +6,7 @@ import {Background} from "@/components/background/background";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import {ClientThemeProvider} from "@/components/clientThemeProvider/clientThemeProvider";
 import {LocationProvider} from "@/components/locationProvider/locationProvider";
+import {WeatherProvider} from "@/components/weatherProvider/weatherProvider";
 
 
 export const metadata: Metadata = {
@@ -24,10 +25,12 @@ export default function RootLayout({
 
       <AppRouterCacheProvider>
           <LocationProvider>
+          <WeatherProvider>
           <ClientThemeProvider>
               <Background/>
         {children}
           </ClientThemeProvider>
+          </WeatherProvider>
           </LocationProvider>
       </AppRouterCacheProvider>
       </body>
