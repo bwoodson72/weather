@@ -20,7 +20,7 @@ export const LocationContext = createContext<LocationContextType | undefined>(un
 
 export function LocationProvider({children}: {children: React.ReactNode}) {
   const [locationCoords, setLocationCoords] = useState<LocationData>({latitude:51.5074, longitude:0.1278});
-const [locationName, setLocationName] = useState<string>('London');
+const [locationName, setLocationName] = useState<string>('London, England');
   return (
     <LocationContext.Provider value={{locationCoords, setLocationCoords, locationName, setLocationName}}>
       {children}

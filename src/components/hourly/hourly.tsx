@@ -46,8 +46,8 @@ export function Hourly() {
       aria-label="hourly"
       sx={{
         minWidth: 300,
-        maxWidth: 375,
-        width: { xs: '100%', sm: 'fit-content' },
+        // maxWidth: 375,
+        width: { xs: '100%', sm: 'fit-content'  },
         height: 'fit-content',
         overflowX: 'scroll',
         borderRadius: 1,
