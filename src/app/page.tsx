@@ -1,11 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {Grid, Container} from "@mui/material";
 import {Temperature} from "@/components/temperature/temperature";
-import {Weather} from "@/components/weather/weather";
+
 import {Search} from "@/components/search/search";
 import {LocationWidget} from "@/components/locationWidget/locationWidget";
 import {Skeleton} from "@mui/material";
+import '@/app/css/weather-icons.css'
 
+import {Hourly} from "@/components/hourly/hourly";
 
 export default function Home() {
   return (
@@ -30,7 +32,7 @@ export default function Home() {
             </Grid>
             <Grid size={{ xs: 12, md: 4 }} sx={{display:'flex', justifyContent:'center'}}>
 
-              <Weather/>
+               <Hourly/>
               </Grid>
 
               </Grid>

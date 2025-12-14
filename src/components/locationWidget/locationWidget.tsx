@@ -2,7 +2,6 @@
 
 import {Typography} from "@mui/material";
 import {Box} from "@mui/material";
-import {LocationButton} from "@/components/locationButton/locationButton";
 import {useContext} from "react";
 import {LocationContext} from "@/components/locationProvider/locationProvider";
 
@@ -15,12 +14,12 @@ export function LocationWidget() {
         return null;
     }
 
-    const {location} = context;
+    const {locationName} = context;
 
     return (
         <Box sx={{display:'flex', justifyContent:'flexStart'}}>
-            <Typography variant='h4' component='h1'>{location.name} </Typography>
-            <LocationButton/>
+            <Typography variant='h4' component='h1'>{locationName} </Typography>
+
         </Box>
     )
 }
