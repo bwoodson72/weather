@@ -19,6 +19,8 @@ export type WeatherContextType = {
   setWeather: Dispatch<SetStateAction<OpenWeatherOneCallResponse | null>>;
   isLoading: boolean;
   error: string | null;
+  unit: 'metric' | 'imperial';
+  setUnit: Dispatch<SetStateAction<'metric' | 'imperial'>>;
 
   // NEW: whether it's currently daytime at the location
   isDay: boolean;
@@ -35,6 +37,7 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
   const [weather, setWeather] = useState<OpenWeatherOneCallResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [unit, setUnit] = useState<'metric' | 'imperial'>('metric');
 
   useEffect(() => {
     if (latitude == null || longitude == null) return;
@@ -45,7 +48,7 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setError(null);
       try {
-        const data = await getWeather(latitude, longitude);
+        const data = await getWeather(latitude, longitude, unit);
         if (!cancelled) setWeather(data);
       } catch (e) {
         console.error("Failed to load weather:", e);
@@ -62,13 +65,13 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
       cancelled = true;
       clearInterval(intervalId);
     };
-  }, [latitude, longitude]);
+  }, [latitude, longitude, unit]);
 
   const dayNow = computeIsDay(weather);
 
   const value = useMemo<WeatherContextType>(
-    () => ({ weather, setWeather, isLoading, error, isDay: dayNow }),
-    [weather, isLoading, error, dayNow]
+    () => ({unit, setUnit, weather, setWeather, isLoading, error, isDay: dayNow }),
+    [weather, isLoading, error, dayNow, unit]
   );
 
   return <WeatherContext.Provider value={value}>{children}</WeatherContext.Provider>;

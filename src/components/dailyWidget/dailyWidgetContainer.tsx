@@ -4,6 +4,7 @@ import { DailyWidget } from './dailyWidget';
 import { WeatherCard } from "@/components/card/weatherCard";
 import { useContext, useMemo } from "react";
 import { WeatherContext } from "@/components/weatherProvider/weatherProvider";
+import {Box, CircularProgress, Typography} from "@mui/material";
 
 function formatDayOfWeekFromUnix(unixSeconds: number): string {
   return new Date(unixSeconds * 1000).toLocaleDateString(undefined, { weekday: "short" });
@@ -57,13 +58,16 @@ export function DailyWidgetContainer() {
   if (isLoading || !weather) {
     return (
       <WeatherCard label="daily">
-        <div>Loading...</div>
+          <Box display="flex" justifyContent="center" alignItems="center" height={250}>
+          <CircularProgress />
+          </Box>
       </WeatherCard>
     );
   }
 
   return (
     <WeatherCard label="daily">
+        <Typography variant="h4" sx={{ mt: 1, mb: 2 }}>Daily Forecast</Typography>
       {dailyRows.map((row) => (
         <DailyWidget
           key={row.key}

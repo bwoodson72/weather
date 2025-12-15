@@ -11,7 +11,7 @@ export function Temperature() {
   // Guard clause: must be inside <WeatherProvider />
   if (!weatherCtx) return null;
 
-  const { weather, isLoading, error } = weatherCtx;
+  const {unit, weather, isLoading, error } = weatherCtx;
 
   if (error) {
     return (
@@ -90,7 +90,7 @@ export function Temperature() {
               <Typography aria-label="current temperature" variant="h2" sx={{ fontSize: 80 }}>
                 {currentTemp}
               </Typography>
-              <Typography sx={{ alignSelf: 'flex-start', fontSize: 18 }}>°C</Typography>
+              <Typography sx={{ alignSelf: 'flex-start', fontSize: 18 }}>°{(unit=== 'metric' ? 'C' : 'F')}</Typography>
             </Box>
           </Box>
         </Grid>

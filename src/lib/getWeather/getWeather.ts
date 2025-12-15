@@ -46,7 +46,8 @@ export type OpenWeatherOneCallResponse = {
 
 export async function getWeather(
   latitude: number,
-  longitude: number
+  longitude: number,
+  unit: "metric" | "imperial" = "metric"
 ): Promise<OpenWeatherOneCallResponse> {
   const baseUrl = "https://api.openweathermap.org/data/3.0/onecall";
   const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
@@ -60,7 +61,7 @@ export async function getWeather(
       params: {
         lat: latitude,
         lon: longitude,
-        units: "metric",
+        units: unit,
         appid: apiKey,
       },
       timeout: 10_000,

@@ -58,7 +58,9 @@ export function Hourly() {
       }}
     >
       <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+
         {hours.slice(0, 9).map((h) => (
+
           <HourlyWidget
             key={h.dt}
             timeLabel={formatHourLabel(h.dt)}

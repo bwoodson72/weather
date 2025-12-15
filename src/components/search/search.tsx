@@ -76,6 +76,8 @@ export function Search() {
     locationContext.setLocationName(
       picked.state ? `${picked.name}, ${picked.state}` : picked.name
     );
+    reset();
+    
   };
 
   const onSubmit: SubmitHandler<FormData> = async ({ location }) => {
