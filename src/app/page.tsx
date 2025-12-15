@@ -6,7 +6,7 @@ import {Search} from "@/components/search/search";
 import {LocationWidget} from "@/components/locationWidget/locationWidget";
 import {Skeleton} from "@mui/material";
 import '@/app/css/weather-icons.css'
-
+import {DailyWidgetContainer} from "@/components/dailyWidget/dailyWidgetContainer";
 import {Hourly} from "@/components/hourly/hourly";
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
           <Container maxWidth='xl'>
 
 
-              <Grid container spacing={3} sx={{display:'flex', justifyContent:'center'}} >
+              <Grid container spacing={3} sx={{display:'flex', justifyContent:'flex-start'}} >
                   <Grid size={12} sx={{display:'flex',justifyContent:'center'}}>
 
                       <Search/>
@@ -35,6 +35,11 @@ export default function Home() {
                <Hourly/>
               </Grid>
 
+              </Grid>
+              <Grid container spacing={3} sx={{display:'flex', justifyContent:'flex-start', mt:3}}>
+                  <Grid size={{ xs: 12, md: 4 }} sx={{display:'flex', justifyContent:'center'}}>
+                      <DailyWidgetContainer/>
+                  </Grid>
               </Grid>
           </Container>
         </>

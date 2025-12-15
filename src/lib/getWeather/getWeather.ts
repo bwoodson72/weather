@@ -7,6 +7,8 @@ export type OpenWeatherOneCallResponse = {
   timezone_offset?: number;
   current?: {
     dt: number;
+    sunrise?: number;
+    sunset?: number;
     temp: number;
     feels_like?: number;
     humidity?: number;
@@ -31,6 +33,7 @@ export type OpenWeatherOneCallResponse = {
   }>;
   daily?: Array<{
     dt: number;
+    pop?: number; // ✅ add this (probability of precipitation 0..1)
     temp?: { min?: number; max?: number };
     weather?: Array<{
       id: number;
