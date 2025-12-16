@@ -133,7 +133,7 @@ export function Search() {
             />
           )}
         />
-        <Button type="submit" variant="contained">Search</Button>
+        <Button type="submit" variant="contained" >Search</Button>
       </Box>
 
 
