@@ -1,3 +1,4 @@
+'use server'
 import axios from "axios";
 
 type OpenWeatherReverseGeoResult = {
@@ -20,7 +21,7 @@ export async function getReverseGeoCode(
   lat: number,
   lng: number
 ): Promise<ReverseGeoCodeResponse> {
-  const baseUrl = "http://api.openweathermap.org/geo/1.0/reverse?";
+  const baseUrl = "https://api.openweathermap.org/geo/1.0/reverse?";
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
     console.log(apiKey);
   if (!apiKey) {
