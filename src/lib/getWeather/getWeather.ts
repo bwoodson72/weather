@@ -1,6 +1,9 @@
 'use server'
 import axios from "axios";
 
+/**
+ * Narrowed shape for the parts of OpenWeather One Call 3.0 used by the app.
+ */
 export type OpenWeatherOneCallResponse = {
   lat: number;
   lon: number;
@@ -45,6 +48,13 @@ export type OpenWeatherOneCallResponse = {
   }>;
 };
 
+/**
+ * Fetches current, hourly, and daily weather for given coordinates.
+ *
+ * Parameters:
+ * - latitude, longitude: location in decimal degrees
+ * - unit: temperature/wind units ("metric" or "imperial"), default "metric"
+ */
 export async function getWeather(
   latitude: number,
   longitude: number,

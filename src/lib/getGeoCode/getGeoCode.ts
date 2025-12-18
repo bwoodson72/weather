@@ -2,6 +2,9 @@
 import axios from "axios";
 
 
+/**
+ * Normalized geocoding result returned by this module.
+ */
 export type GeoCodeResponse = {
   name: string;
   state?: string;
@@ -9,6 +12,9 @@ export type GeoCodeResponse = {
   longitude: number;
 };
 
+/**
+ * Subset of OpenWeather's Direct Geocoding API response.
+ */
 type OpenWeatherDirectGeoResult = {
   name: string;
   lat: number;
@@ -18,6 +24,9 @@ type OpenWeatherDirectGeoResult = {
   local_names?: Record<string, string>;
 };
 
+/**
+ * Subset of OpenWeather's ZIP Geocoding API response.
+ */
 type OpenWeatherZipGeoResult = {
   zip: string;
   name: string;
@@ -26,11 +35,17 @@ type OpenWeatherZipGeoResult = {
   country?: string;
 };
 
+/**
+ * Returns true if the input matches a US ZIP format (12345 or 12345-6789).
+ */
 function isZip(input: string): boolean {
   // US ZIP: 12345 or 12345-6789
   return /^\d{5}(-\d{4})?$/.test(input.trim());
 }
 
+/**
+ * Reads the OpenWeather API key from env and throws an actionable error if missing.
+ */
 function getApiKey(): string {
   const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
   if (!apiKey) {
@@ -39,6 +54,17 @@ function getApiKey(): string {
   return apiKey;
 }
 
+/**
+ * Geocodes a city name or a US ZIP code using OpenWeather APIs.
+ *
+ * Behavior:
+ * - If input looks like a ZIP, queries the ZIP geocoding endpoint (US only).
+ * - Otherwise, queries the Direct Geocoding endpoint (city name search).
+ *
+ * Errors:
+ * - Throws on missing API key
+ * - Throws if input is empty or no results are found
+ */
 export async function getGeoCode(input: string): Promise<GeoCodeResponse[]> {
   const apiKey = getApiKey();
   const q = input.trim();

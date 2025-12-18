@@ -14,6 +14,9 @@ import { getWeather } from "@/lib/getWeather/getWeather";
 import type { OpenWeatherOneCallResponse } from "@/lib/getWeather/getWeather";
 import { isDay as computeIsDay } from "@/lib/isDay/isDay";
 
+/**
+ * Shape of the WeatherContext value exposed to consumers.
+ */
 export type WeatherContextType = {
   weather: OpenWeatherOneCallResponse | null;
   setWeather: Dispatch<SetStateAction<OpenWeatherOneCallResponse | null>>;
@@ -28,6 +31,10 @@ export type WeatherContextType = {
 
 export const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 
+/**
+ * WeatherProvider subscribes to location changes and fetches weather data
+ * from OpenWeather. It also manages units and periodically refreshes data.
+ */
 export function WeatherProvider({ children }: { children: React.ReactNode }) {
   const locationContext = useContext(LocationContext);
 
@@ -39,6 +46,7 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric');
 
+  // Fetch weather when location or units change; refresh hourly
   useEffect(() => {
     if (latitude == null || longitude == null) return;
 
@@ -67,6 +75,7 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
     };
   }, [latitude, longitude, unit]);
 
+  // whether it's currently daytime for the current weather snapshot
   const dayNow = computeIsDay(weather);
 
   const value = useMemo<WeatherContextType>(

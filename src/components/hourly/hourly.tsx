@@ -1,75 +1,84 @@
 'use client'
 import { HourlyWidget } from "@/components/hourlyWidget/hourlyWidget";
-import { Card, CardContent, CircularProgress, Typography, Box } from "@mui/material";
+import { Card, CircularProgress, Typography, Box } from "@mui/material";
 import { useContext } from "react";
 import { WeatherContext } from "@/components/weatherProvider/weatherProvider";
+import { glassStyle } from "@/theme/glass";
 
 function formatHourLabel(unixSeconds: number): string {
-  // Example output: "6pm"
-  return new Date(unixSeconds * 1000).toLocaleTimeString([], {
-    hour: "numeric",
-    hour12: true,
-  }).toLowerCase();
+    return new Date(unixSeconds * 1000).toLocaleTimeString([], {
+        hour: "numeric",
+        hour12: true,
+    }).toLowerCase();
 }
 
 export function Hourly() {
-  const weatherCtx = useContext(WeatherContext);
+    const weatherCtx = useContext(WeatherContext);
+    if (!weatherCtx) return null;
 
-  if (!weatherCtx) return null;
+    const { weather, isLoading, error, isDay } = weatherCtx;
 
-  const { weather, isLoading, error, isDay } = weatherCtx;
+    if (error) {
+        return (
+            <Card sx={{ width: '100%', p: 2, ...glassStyle }}>
+                <Typography color="error">{error}</Typography>
+            </Card>
+        );
+    }
 
-  if (error) {
+    if (isLoading || !weather) {
+        return (
+            <Card sx={{ width: '100%', p: 2, ...glassStyle }}>
+                <Box display="flex" justifyContent="center" py={4}>
+                    <CircularProgress />
+                </Box>
+            </Card>
+        );
+    }
+
+    const hours = weather?.hourly ?? [];
+
     return (
-      <Card aria-label="hourly" sx={{ minWidth: 300, maxWidth: 375, width: { xs: '100%', sm: 'fit-content' }, borderRadius: 1, p: 2, backgroundColor: 'rgba(0,0,0, 0.2)', backdropFilter: 'blur(10px)' }}>
-        <Box display="flex" justifyContent="center" alignItems="center" height={120}>
-          <Typography color="error">{error}</Typography>
-        </Box>
-      </Card>
+        <Card
+            aria-label="hourly"
+            sx={{
+                width: '100%', // UNIFORM WIDTH: Stretch to fill parent
+                maxWidth: 'none', // Remove caps that cause misalignment
+                p: 1,
+                ...glassStyle,
+                overflow: 'hidden',
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    overflowX: 'auto',
+                    width: '100%', // Ensure the scroll area fills the card
+                    gap: 1,
+                    p: 1,
+                    '&::-webkit-scrollbar': { height: '6px' },
+                    '&::-webkit-scrollbar-track': { backgroundColor: 'transparent' },
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        borderRadius: '10px',
+                        border: '2px solid transparent',
+                        backgroundClip: 'content-box',
+                    },
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: 'rgba(255, 255, 255, 0.2) transparent',
+                }}
+            >
+                {hours.slice(0, 12).map((h) => (
+                    <Box key={h.dt} sx={{ flexShrink: 0 }}>
+                        <HourlyWidget
+                            timeLabel={formatHourLabel(h.dt)}
+                            temperature={h.temp}
+                            weatherCode={h.weather?.[0]?.id ?? 0}
+                            isDay={isDay}
+                        />
+                    </Box>
+                ))}
+            </Box>
+        </Card>
     );
-  }
-
-  if (isLoading || !weather) {
-    return (
-      <Card aria-label="hourly" sx={{ minWidth: 300, maxWidth: 375, width: { xs: '100%', sm: 'fit-content' }, borderRadius: 1, p: 2, backgroundColor: 'rgba(0,0,0, 0.2)', backdropFilter: 'blur(10px)' }}>
-        <Box display="flex" justifyContent="center" alignItems="center" height={120}>
-          <CircularProgress />
-        </Box>
-      </Card>
-    );
-  }
-
-  const hours = weather.hourly ?? [];
-
-  return (
-    <Card
-      aria-label="hourly"
-      sx={{
-        minWidth: 300,
-        // maxWidth: 375,
-        width: { xs: '100%', sm: 'fit-content'  },
-        height: 'fit-content',
-        overflowX: 'scroll',
-        borderRadius: 1,
-        p: 2,
-        backgroundColor: 'rgba(0,0,0, 0.2)',
-        backdropFilter: 'blur(10px)',
-        shadow: 20
-      }}
-    >
-      <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-
-        {hours.slice(0, 9).map((h) => (
-
-          <HourlyWidget
-            key={h.dt}
-            timeLabel={formatHourLabel(h.dt)}
-            temperature={h.temp}
-            weatherCode={h.weather?.[0]?.id ?? 0}
-            isDay={isDay}
-          />
-        ))}
-      </CardContent>
-    </Card>
-  );
 }

@@ -4,19 +4,25 @@ import { DailyWidget } from './dailyWidget';
 import { WeatherCard } from "@/components/card/weatherCard";
 import { useContext, useMemo } from "react";
 import { WeatherContext } from "@/components/weatherProvider/weatherProvider";
-import {Box, CircularProgress, Typography} from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
+/**
+ * Formats a unix timestamp (s) to a short weekday label in the user's locale.
+ */
 function formatDayOfWeekFromUnix(unixSeconds: number): string {
   return new Date(unixSeconds * 1000).toLocaleDateString(undefined, { weekday: "short" });
 }
 
+/**
+ * True if two unix timestamps (s) fall on the same local day.
+ */
 function isSameLocalDay(aUnixSeconds: number, bUnixSeconds: number): boolean {
   const a = new Date(aUnixSeconds * 1000);
   const b = new Date(bUnixSeconds * 1000);
   return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
+      a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate()
   );
 }
 
@@ -27,7 +33,7 @@ export function DailyWidgetContainer() {
   const isLoading = weatherCtx?.isLoading ?? false;
   const error = weatherCtx?.error ?? null;
 
-  // ✅ useMemo is always called (never conditional)
+  // RESTORED: Your original memoized logic
   const dailyRows = useMemo(() => {
     if (!weather?.daily?.length) return [];
 
@@ -44,41 +50,51 @@ export function DailyWidgetContainer() {
     }));
   }, [weather]);
 
-  // ✅ now early returns are safe
   if (!weatherCtx) return null;
 
   if (error) {
     return (
-      <WeatherCard label="daily">
-        <div>{error}</div>
-      </WeatherCard>
+        <WeatherCard label="daily">
+          <Typography color="error">{error}</Typography>
+        </WeatherCard>
     );
   }
 
   if (isLoading || !weather) {
     return (
-      <WeatherCard label="daily">
+        <WeatherCard label="daily">
           <Box display="flex" justifyContent="center" alignItems="center" height={250}>
-          <CircularProgress />
+            <CircularProgress />
           </Box>
-      </WeatherCard>
+        </WeatherCard>
     );
   }
 
   return (
-    <WeatherCard label="daily">
-        <Typography variant="h4" sx={{ mt: 1, mb: 2 }}>Daily Forecast</Typography>
-      {dailyRows.map((row) => (
-        <DailyWidget
-          key={row.key}
-          dayOfWeek={row.dayOfWeek}
-          chanceOfRain={row.chanceOfRain}
-          dayTemp={row.dayTemp}
-          nightTemp={row.nightTemp}
-          dayCode={row.dayCode}
-          nightCode={row.nightCode}
-        />
-      ))}
-    </WeatherCard>
+      <WeatherCard label="daily">
+
+
+        {/* LAYOUT FIX: This Box ensures the rows take up every pixel
+         of the WeatherCard's width.
+      */}
+        <Box sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 0.5 // Adjust row spacing here
+        }}>
+          {dailyRows.map((row) => (
+              <DailyWidget
+                  key={row.key}
+                  dayOfWeek={row.dayOfWeek}
+                  chanceOfRain={row.chanceOfRain}
+                  dayTemp={row.dayTemp}
+                  nightTemp={row.nightTemp}
+                  dayCode={row.dayCode}
+                  nightCode={row.nightCode}
+              />
+          ))}
+        </Box>
+      </WeatherCard>
   );
 }

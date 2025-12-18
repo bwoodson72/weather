@@ -1,6 +1,9 @@
 'use server'
 import axios from "axios";
 
+/**
+ * Subset of OpenWeather Reverse Geocoding API response.
+ */
 type OpenWeatherReverseGeoResult = {
   name: string;
   lat: number;
@@ -10,6 +13,9 @@ type OpenWeatherReverseGeoResult = {
   local_names?: Record<string, string>;
 };
 
+/**
+ * Normalized reverse geocoding result returned by this module.
+ */
 export type ReverseGeoCodeResponse = {
   name: string;
   state?: string;
@@ -17,13 +23,19 @@ export type ReverseGeoCodeResponse = {
   longitude: number;
 };
 
+/**
+ * Reverse geocodes latitude/longitude to a human-readable place name.
+ *
+ * Parameters:
+ * - lat: latitude in decimal degrees
+ * - lng: longitude in decimal degrees
+ */
 export async function getReverseGeoCode(
   lat: number,
   lng: number
 ): Promise<ReverseGeoCodeResponse> {
   const baseUrl = "https://api.openweathermap.org/geo/1.0/reverse?";
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
-    console.log(apiKey);
   if (!apiKey) {
     throw new Error("Missing API key for reverse geocoding (APIKEY).");
   }

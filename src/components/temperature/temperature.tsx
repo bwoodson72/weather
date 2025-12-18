@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { WeatherContext } from "@/components/weatherProvider/weatherProvider";
 import { toTitleCase } from "@/lib/toTitleCase/toTitleCase";
 
+
 export function Temperature() {
   const weatherCtx = useContext(WeatherContext);
 
